@@ -1,0 +1,81 @@
+# Gradle files
+.gradle/
+build/
+*/build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Log/OS Files
+*.log
+*.DS_Store
+
+# Android Studio generated files and folders
+.idea/
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Android Studio/IntelliJ
+*.iml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/assetWizardSettings.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
+.idea/codeStyles/
+.idea/caches/
+.idea/modules.xml
+*.swp
+*~ 
+*.swo
+*#
+.#*
+
+# NDK
+obj/
+.externalNativeBuild
+
+# Built application files
+*.apk
+*.ap_
+*.aab
+
+# Test files
+.coverage
+
+# Miscellaneous
+*.class
+*.log
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Kotlin/Java
+*.kt.bak
+out/
+
+# Custom
+.env
+secrets.properties
+signing.properties
+keystore.jks
+*.keystore

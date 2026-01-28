@@ -42,21 +42,21 @@ fun AppNavigation() {
     ) { screen ->
 
         when (screen) {
+
+
             Screen.Splash -> {
                 ChikenzillaSplashScreen(progressIndex)
             }
             Screen.Menu -> {
                 MainMenuScreen(
-                    PrivacyClick = { currentScreen = Screen.PrivacyPolicy },
-                    StartClick = { currentScreen = Screen.GameScreen },
-                    RecordsClick = { currentScreen = Screen.Records }
+                    onPrivacyClick = { currentScreen = Screen.PrivacyPolicy },
+                    onStartClick = { currentScreen = Screen.GameScreen },
+                    onRecordsClick = { currentScreen = Screen.Records }
                 )
             }
             Screen.PrivacyPolicy -> {
                 PrivacyPolicy(
-                    MainMenuClick = { currentScreen = Screen.Menu },
-                    StartClick = { currentScreen = Screen.GameScreen },
-                    RecordsClick = { currentScreen = Screen.Records }
+                    onMainMenuClick = { currentScreen = Screen.Menu }
                 )
             }
             Screen.GameScreen -> {
@@ -68,7 +68,7 @@ fun AppNavigation() {
             // 👇 ОСЬ ЦЮ ЧАСТИНУ ВИ ЗАБУЛИ (АБО ВОНА БУЛА В else) 👇
             Screen.Records -> {
                 RecordsScreen(
-                    MainMenuClick = { currentScreen = Screen.Menu },
+                    onMainMenuClick = { currentScreen = Screen.Menu },
 
                 )
             }

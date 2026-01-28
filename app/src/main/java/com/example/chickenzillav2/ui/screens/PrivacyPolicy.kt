@@ -19,13 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.chickenzillav2.R
 
 @Composable
-fun PrivacyPolicy(MainMenuClick: () -> Unit, StartClick: () -> Unit, RecordsClick: () -> Unit) {
+fun PrivacyPolicy(onMainMenuClick: () -> Unit) {
     Image(
         painter = painterResource(R.drawable.back1),
         contentDescription = null,
@@ -51,7 +50,7 @@ fun PrivacyPolicy(MainMenuClick: () -> Unit, StartClick: () -> Unit, RecordsClic
             modifier = Modifier
                 .width(80.dp)
                 .height(80.dp)
-                .clickable { MainMenuClick() }
+                .clickable { onMainMenuClick() }
         )
 
         Box(
@@ -68,10 +67,8 @@ fun PrivacyPolicy(MainMenuClick: () -> Unit, StartClick: () -> Unit, RecordsClic
                 )
 
             Text(
-                text = "Privacy Policy",
-                fontSize = 30.sp,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
+                text = stringResource(R.string.privacy_policy),
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
                     .padding(35.dp)
 

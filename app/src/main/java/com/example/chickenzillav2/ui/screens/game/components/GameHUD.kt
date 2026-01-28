@@ -1,60 +1,83 @@
 package com.example.chickenzillav2.ui.screens.game.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
-import com.example.chickenzillav2.ui.screens.game.components.ScoreBoard
+import androidx.compose.ui.unit.dp
+//import com.example.chickenzillav2.ui.screens.game.components.ScoreBoard
 import kotlin.math.roundToInt
-
+import com.example.chickenzillav2.R
 @Composable
 fun GameHUD(
     score: Int,
     lives: Int,
-    bitmaps: Map<String, ImageBitmap>,
-    font: android.graphics.Typeface?
+    onPauseClick: () -> Unit = {}
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        val topMargin = 80f
-        val sideMargin = 60f
+    Row(horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 30.dp, vertical = 50.dp)
+        ) {
 
-        // Pause Button
-        bitmaps["pause_btn"]?.let { btn ->
+
+        Image(
+            painter = painterResource(R.drawable.pause),
+            contentDescription = null,
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier
+                .weight(80f/352f)
+                .clickable { onPauseClick() }
+
+        )
+        Spacer(modifier = Modifier.weight(127f/352f))
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.weight(145f/352f)
+        ) {
             Image(
-                bitmap = btn,
-                contentDescription = "Pause",
-                modifier = Modifier
-                    .offset { IntOffset(sideMargin.roundToInt(), topMargin.roundToInt()) }
+                painter = painterResource(id = R.drawable.score),
+                contentDescription = null,
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.FillWidth,
             )
-        }
 
-        // Score Board
-        bitmaps["score_bg"]?.let { bg ->
-            Box(modifier = Modifier.fillMaxSize()) {
+            Text(
+                text = score.toString(),
+                style = MaterialTheme.typography.titleLarge,
+                color = Color.Black,
 
-                ScoreBoard(
-                    score = score,
-                    bgBitmap = bg,
-                    font = font,
-                    topMarginPx = topMargin,
-                    sideMarginPx = sideMargin,
-                    modifier = Modifier.align(Alignment.TopEnd)
                 )
 
-            }
-
         }
-
-        // Lives
-        LivesHearts(
-            lives = lives,
-            bitmaps = bitmaps,
-            modifier = Modifier.fillMaxSize()
-        )
     }
+
+
+
+    // Lives
+    LivesHearts(
+        lives = lives,
+        modifier = Modifier.fillMaxSize()
+    )
 }
+

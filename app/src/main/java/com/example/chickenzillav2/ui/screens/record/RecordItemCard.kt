@@ -12,9 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.chickenzillav2.R
@@ -23,16 +23,14 @@ import com.example.chickenzillav2.data.game.GameResult
 @Composable
 fun RecordItemCard(result: GameResult) {
     Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .height(85.dp)
+            .paint(
+                painter = painterResource(id = R.drawable.frame_score),
+                contentScale = ContentScale.FillWidth,
+            )
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.frame_score),
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.fillMaxSize()
-        )
 
         Row(
             modifier = Modifier
@@ -42,25 +40,19 @@ fun RecordItemCard(result: GameResult) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
 
-            // Date
-            Column(
-
-            ) {
 
                 Text(
                     text = result.getFormattedDate(),
                     style = MaterialTheme.typography.titleLarge
                 )
-            }
-            // Score
-            Column(horizontalAlignment = Alignment.End) {
+
 
                 Text(
                     text = result.score.toString(),
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
+
                 )
-            }
+
 
 
         }

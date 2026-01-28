@@ -2,6 +2,7 @@ package com.example.chickenzillav2.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -9,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 // ЗВЕРНИ УВАГУ: Цей імпорт важливий для доступу до картинок
@@ -42,12 +44,16 @@ fun ChikenzillaSplashScreen(currentProgressIndex: Int) {
             Image(
                 painter = painterResource(R.drawable.chick_right),
                 contentDescription = null,
-                modifier = Modifier.size(170.dp).offset(y = 100.dp)
+                modifier = Modifier
+                    .size(170.dp)
+                    .offset(y = 100.dp)
             )
             Image(
                 painter = painterResource(R.drawable.logo),
                 contentDescription = null,
-                modifier = Modifier.size(580.dp).offset(y = -200.dp)
+                modifier = Modifier
+                    .size(580.dp)
+                    .offset(y = -200.dp)
             )
         }
 
@@ -67,11 +73,17 @@ fun ChikenzillaSplashScreen(currentProgressIndex: Int) {
             Image(
                 painter = painterResource(imageRes),
                 contentDescription = null,
-                modifier = Modifier.width(200.dp).height(150.dp)
+                modifier = Modifier
+                    .width(200.dp)
+                    .height(150.dp)
             )
 
             Box(contentAlignment = Alignment.BottomCenter) {
-                Text(text = "Loading...", fontFamily = BalooFont, fontSize = 40.sp, color = Color.White)
+                Text(
+                    text = stringResource(R.string.loading),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color.White
+                )
             }
         }
     }

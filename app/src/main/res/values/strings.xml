@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">ChickenzillaV2</string>
+    <string name="pause">PAUSE</string>
+    <string name="start">Start</string>
+    <string name="records">Records</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="exit">Exit</string>
+    <string name="resume">Resume</string>
+    <string name="pause_menu_panel">Pause Menu Panel</string>
+    <string name="play_again">Play Again</string>
+    <string name="game_over">Game\nOver</string>
+    <string name="no_records_yet">No records yet</string>
+    <string name="loading">Loading...</string>
 </resources>

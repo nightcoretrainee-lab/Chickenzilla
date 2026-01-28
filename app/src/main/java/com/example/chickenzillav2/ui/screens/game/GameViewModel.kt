@@ -1,6 +1,5 @@
 package com.example.chickenzillav2.ui.screens.game
 
-import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -11,13 +10,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.IntSize
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.chickenzillav2.data.game.GameDatabase
 import com.example.chickenzillav2.data.game.GameResult
 import com.example.chickenzillav2.data.game.GameResultRepository
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
-// --- DATA CLASSES (Винесено сюди) ---
+// --- DATA CLASSES ---
 enum class EntityType { GOOD, BAD }
 
 class FallingItem(
@@ -29,14 +30,7 @@ class FallingItem(
     var isActive: Boolean = false
 )
 
-class GameViewModel(context: Context? = null) : ViewModel() {
-
-    private val repository: GameResultRepository? = if (context != null) {
-        val database = GameDatabase.getDatabase(context)
-        GameResultRepository(database.gameResultDao())
-    } else {
-        null
-    }
+class GameViewModel(private val repository: GameResultRepository) : ViewModel() {
 
     // --- STATE (Стан гри) ---
     var score by mutableIntStateOf(0)
@@ -52,11 +46,12 @@ class GameViewModel(context: Context? = null) : ViewModel() {
         private set
     var isFacingRight by mutableStateOf(true)
         private set
-
+    private var gameLoopJob: Job? = null
+    private var screenSize: IntSize = IntSize.Zero
     // Список об'єктів
     val items = mutableStateListOf<FallingItem>()
 
-    // Тригер для примусового перемальовування Canvas (оптимізація)
+    // Тригер для примусового перемалювання Canvas (оптимізація)
     var gameStateTrigger by mutableLongStateOf(0L)
         private set
 
@@ -64,7 +59,7 @@ class GameViewModel(context: Context? = null) : ViewModel() {
     private val playerWidth = 200f
     private val playerBottomMargin = 420f
 
-    // --- LOGIC (Логіка) ---
+    // --- LOGIC ---
 
     fun initPlayerPosition(screenWidth: Int) {
         if (playerX == 0f) {
@@ -130,17 +125,12 @@ class GameViewModel(context: Context? = null) : ViewModel() {
         }
     }
 
-    fun onTap(offsetApi: androidx.compose.ui.geometry.Offset) {
-        if (offsetApi.x < 200 && offsetApi.y < 200 && !isGameOver) {
-            isPaused = true
-        }
-    }
 
     // Збереження результату в БД (тільки якщо score > 0)
     private fun saveGameResult() {
         if (score > 0) {
             viewModelScope.launch {
-                repository?.insertResult(
+                repository.insertResult(
                     GameResult(
                         score = score,
                         lives = lives,
@@ -167,7 +157,7 @@ class GameViewModel(context: Context? = null) : ViewModel() {
     fun exitAndSaveGame() {
         if (score > 0) {
             viewModelScope.launch {
-                repository?.insertResult(
+                repository.insertResult(
                     GameResult(
                         score = score,
                         lives = lives,
@@ -176,11 +166,39 @@ class GameViewModel(context: Context? = null) : ViewModel() {
                 )
             }
         }
-        // Скидаємо стан
         restartGame()
     }
 
     fun getPlayerYPosition(screenHeight: Int): Float {
         return screenHeight - playerBottomMargin
     }
+
+    fun startGameLoop(newScreenSize: IntSize) {
+        screenSize = newScreenSize
+
+        if (gameLoopJob?.isActive == true) {
+            return
+        }
+
+        gameLoopJob = viewModelScope.launch {
+            while (isActive) {
+                val startTime = System.nanoTime()
+
+                updateGameLogic(screenSize)
+
+                val frameDuration = (System.nanoTime() - startTime) / 1_000_000
+                val delayTime = (16 - frameDuration).coerceAtLeast(0)
+                delay(delayTime)
+            }
+        }
+    }
+
+    /**
+     * Зупинення game loop
+     */
+    fun stopGameLoop() {
+        gameLoopJob?.cancel()
+        gameLoopJob = null
+    }
+
 }

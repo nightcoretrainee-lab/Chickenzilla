@@ -19,24 +19,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.chickenzillav2.R
-import com.example.chickenzillav2.data.game.GameResult
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun RecordsScreen(
-    MainMenuClick: () -> Unit,
+    onMainMenuClick: () -> Unit,
 ) {
-    val context = LocalContext.current
-    val viewModel = remember { RecordsViewModel(context) }
+    // Отримуємо ViewModel через Koin
+    val viewModel: RecordsViewModel = koinViewModel()
 
     val topResults by viewModel.topResults.collectAsState(initial = emptyList())
     val hasResults by viewModel.hasResults
@@ -67,7 +64,7 @@ fun RecordsScreen(
                 modifier = Modifier
                     .width(80.dp)
                     .height(80.dp)
-                    .clickable { MainMenuClick() }
+                    .clickable { onMainMenuClick() }
             )
 
             Box(
@@ -82,10 +79,8 @@ fun RecordsScreen(
                 )
 
                 Text(
-                    text = "Records",
-                    fontSize = 30.sp,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
+                    text = stringResource(R.string.records),
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(35.dp)
                 )
             }
@@ -114,10 +109,8 @@ fun RecordsScreen(
                     )
 
                     Text(
-                        text = "No records yet",
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.titleLarge
+                        text = stringResource(R.string.no_records_yet),
+                        style = MaterialTheme.typography.titleMedium
                     )
                 }
             }
